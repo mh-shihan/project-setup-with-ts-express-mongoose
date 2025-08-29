@@ -53,16 +53,19 @@ npm install @types/node @types/express @types/cors --save-dev
 Create a `app\config\index.ts` file in the src directory of your project:
 
 ```typescript
-import app from "./app";
-import mongoose from "mongoose";
-import config from "./app/config";
+import app from './app';
+import mongoose from 'mongoose';
+import config from './app/config';
+import { Server } from 'http';
+
+let server: Server;
 
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);
 
-    app.listen(config.port, () => {
-      console.log(`Example app listening on port ${config.port}`);
+    server = app.listen(config.port, () => {
+      console.log(`Level2 First app listening on port ${config.port}`);
     });
   } catch (error) {
     console.log(error);
@@ -70,6 +73,23 @@ async function main() {
 }
 
 main();
+
+process.on('unhandledRejection', () => {
+  console.log(`😈 unhandledRejection is detected, shutting down ...`);
+
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+    process.exit(1);
+  }
+});
+
+process.on('uncaughtException', () => {
+  console.log(`😈 uncaughtException is detected, shutting down ...`);
+
+  process.exit(1);
+});
 ```
 
 ## Now Its Time to setup eslint and Prettier
@@ -109,6 +129,7 @@ npm install ts-node-dev --save-dev
 npm install bcrypt
 npm install -D --save @types/bcrypt
 ```
+
 ## Install http-status for showing error status
 
 ```bash
@@ -121,3 +142,5 @@ npm i http-status
 npm install cookie-parser
 npm i -D @types/cookie-parser
 ```
+
+## Do not forget to add `.env` in `gitignore` file
