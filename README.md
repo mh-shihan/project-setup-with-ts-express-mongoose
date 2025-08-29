@@ -109,3 +109,15 @@ npm install ts-node-dev --save-dev
 npm install bcrypt
 npm install -D --save @types/bcrypt
 ```
+## Install http-status for showing error status
+
+```bash
+npm i http-status
+```
+
+## Install cookie-parser
+
+```bash
+npm install cookie-parser
+npm i -D @types/cookie-parser
+```
