@@ -2,23 +2,20 @@
 import { TErrorSources, TGenericErrorResponse } from '../interfaces/error';
 
 const handleDuplicateError = (err: any): TGenericErrorResponse => {
-  const keys = Object.keys(err?.keyValue || {});
-  const path = keys.length > 0 ? keys[0] : 'unknown';
+  const statusCode = 400;
 
-  // Extract value using regex or fallback to keyValue
-  const errmsg = err?.errorResponse?.errmsg || err?.message || '';
-  const match = errmsg.match(/"([^"]*)"/);
-  const extractedValue = match?.[1] || err?.keyValue?.[path] || 'value';
+  const fields = Object.keys(err?.keyValue || {});
+  const duplicateValue = Object.values(err?.keyValue || {})[0];
 
   const errorSources: TErrorSources = [
     {
-      path,
-      message: `${extractedValue} already exists!`,
+      path: fields[0] || '',
+      message: `${duplicateValue} already exists!`,
     },
   ];
 
   return {
-    statusCode: 400,
+    statusCode,
     message: 'Duplicate Key Error',
     errorSources,
   };
