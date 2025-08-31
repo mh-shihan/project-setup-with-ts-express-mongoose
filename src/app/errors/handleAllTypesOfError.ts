@@ -5,7 +5,7 @@ import handleCastError from './handleCastError';
 import handleDuplicateError from './handleDuplicateError';
 import handleValidationError from './handleValidationError';
 import handleZodError from './handleZodError';
-import { TErrorSources, TGenericErrorResponse } from '../interfaces/error';
+import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
 const handleAllTypesOfError = (err: any): TGenericErrorResponse => {
   let statusCode = 500;
